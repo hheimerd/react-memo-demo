@@ -20,16 +20,25 @@ function CompRoot() {
 }
 
 const MemoComponent = memo(({unchangeable}) => {
-    const [innerState, setInnerState] = useState(0);
     return (
         <ColoredBlock>
             <PureComponent prop={unchangeable}/>
             <PureComponent prop={unchangeable}/>
-            <button onClick={() => setInnerState(innerState + 1)}>change inner state</button>
+            <WithInnerState/>
         </ColoredBlock>
     )
 })
 MemoComponent.displayName = 'MemoComponent';
+
+function WithInnerState() {
+    const [innerState, setInnerState] = useState(0);
+
+    return (
+        <ColoredBlock>
+            <button onClick={() => setInnerState(innerState + 1)}>change inner state</button>
+        </ColoredBlock>
+    )
+}
 
 function PureComponent() {
     return <ColoredBlock></ColoredBlock>
