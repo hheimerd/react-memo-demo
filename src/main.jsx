@@ -32,9 +32,11 @@ MemoComponent.displayName = 'MemoComponent';
 
 function WithInnerState() {
     const [innerState, setInnerState] = useState(0);
+    const memoized = useMemo(() => <PureComponent/>, []);
 
     return (
         <ColoredBlock>
+            {memoized}
             <button onClick={() => setInnerState(innerState + 1)}>change inner state</button>
         </ColoredBlock>
     )
