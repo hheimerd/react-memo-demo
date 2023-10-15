@@ -12,14 +12,14 @@ function CompRoot() {
     return (
         <ColoredBlock>
             {changeable}
-            <PureComponent prop={changeable}/>
-            <MemoComponent unchangeable={unchangeable}/>
+            {changeable % 2 === 0 ? <MemoComponent1/> : <MemoComponent2/>}
+            {changeable % 2 === 0 ? <MemoComponent2/> : <MemoComponent1/>}
             <button onClick={() => setChangeable(changeable + 1)}>change</button>
         </ColoredBlock>
     )
 }
 
-const MemoComponent = memo(({unchangeable}) => {
+const MemoWrapper = memo(({unchangeable}) => {
     return (
         <ColoredBlock>
             <PureComponent prop={unchangeable}/>
@@ -28,7 +28,19 @@ const MemoComponent = memo(({unchangeable}) => {
         </ColoredBlock>
     )
 })
-MemoComponent.displayName = 'MemoComponent';
+MemoWrapper.displayName = 'MemoWrapper';
+
+const MemoComponent2 = memo(() => {
+    console.log('render 2');
+    return <ColoredBlock/>
+})
+MemoComponent2.displayName = 'MemoComponent2';
+
+const MemoComponent1 = memo(() => {
+    console.log('render 1');
+    return <ColoredBlock/>
+})
+MemoComponent1.displayName = 'MemoComponent1';
 
 function WithInnerState() {
     const [innerState, setInnerState] = useState(0);
