@@ -13,7 +13,9 @@ function CompRoot() {
         <ColoredBlock>
             {changeable}
             {changeable % 2 === 0 ? <MemoComponent1 key={1}/> : <MemoComponent2 key={2}/>}
-            {changeable % 2 === 0 ? <MemoComponent2 key={2}/> : <MemoComponent1 key={1}/>}
+            <div>
+                {changeable % 2 === 0 ? <MemoComponent2 key={2}/> : <MemoComponent1 key={1}/>}
+            </div>
             <button onClick={() => setChangeable(changeable + 1)}>change</button>
         </ColoredBlock>
     )
