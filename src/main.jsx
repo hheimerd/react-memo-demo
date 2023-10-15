@@ -1,34 +1,41 @@
-import React, {useState, useMemo} from 'react';
+/* eslint-disable react/prop-types */
+import React, {useState, useMemo, memo} from 'react';
 import cn from 'classnames'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 
-function useRerenderColorClass() {
-    let className = 'red';
-    useMemo(() => className = 'green', []);
-
-    return className;
-}
 
 function CompRoot() {
     const [changeable, setChangeable] = useState(0);
-    const unchagneable = 0;
-
-    const className = useRerenderColorClass()
+    const unchangeable = 0;
 
     return (
-        <div className={cn(className, 'block')}>
+        <ColoredBlock>
             {changeable}
             <PureComponent prop={changeable}/>
-            <PureComponent prop={unchagneable}/>
+            <MemoComponent unchangeable={unchangeable}/>
             <button onClick={() => setChangeable(changeable + 1)}>change</button>
-        </div>
+        </ColoredBlock>
     )
 }
 
+const MemoComponent = memo(({unchangeable}) => {
+    return (
+        <ColoredBlock>
+            <PureComponent prop={unchangeable}/>
+            <PureComponent prop={unchangeable}/>
+        </ColoredBlock>
+    )
+})
+MemoComponent.displayName = 'MemoComponent';
+
 function PureComponent() {
-    const className = useRerenderColorClass()
-    return <div className={cn(className, 'block')}></div>
+    return <ColoredBlock></ColoredBlock>
+}
+
+function ColoredBlock(props) {
+    const className = useBlockClassName()
+    return <div {...props} className={cn(className, props.className)}></div>
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -36,3 +43,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <CompRoot />
     </React.StrictMode>,
 )
+
+
+
+function useBlockClassName() {
+    let className = 'red';
+    useMemo(() => className = 'green', []);
+
+    return cn(className, 'block');
+}
